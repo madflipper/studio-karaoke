@@ -1410,16 +1410,6 @@ function Home() {
     );
 }
 
-function QueueSong(event, name, song) {
-    event.preventDefault();
-    const data = {
-        name: name,
-        title: song.Title,
-        artist: song.Artist,
-    };
-    console.log('APA', data);
-}
-
 function SongList({ songs }) {
     const halfWayPoint = Math.ceil(songs.length / 2);
     const columnA = songs.slice(0, halfWayPoint);
@@ -1427,22 +1417,14 @@ function SongList({ songs }) {
 
     return (
         <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
-            <Fragment>
-                {columnA.map((song, i) => {
-                    return <SongCard song={song} key={i} />;
-                })}
-            </Fragment>
-            <Fragment>
-                {columnB.map((song, i) => {
-                    return <SongCard song={song} key={i} />;
-                })}
-            </Fragment>
+            {songs.map((song, i) => {
+                return <SongCard song={song} key={i} />;
+            })}
         </div>
     );
 }
 
 function SongCard({ song }) {
-    const [name, SetName] = useState('');
     return (
         <div className="border-r-6 rounded-lg shadow-lg bg-white mb-2 p-4 flex flex-col content-start text-left">
             <div className="flex items-center">
@@ -1454,34 +1436,10 @@ function SongCard({ song }) {
                 <p>{song.Title}</p>
             </div>
             <div>
-                <form onSubmit={(e) => [QueueSong(e, name, song), SetName('')]}>
-                    <input
-                        className="shadow appearance-none border border-gray-500 rounded w-full py-2 px-2 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                        type="text"
-                        value={name}
-                        onChange={(e) => SetName(e.target.value)}
-                        name="name"
-                        placeholder="Ditt namn..."
-                    />
-
-                    <button
-                        type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                        Lägg till i kön
-                    </button>
-                </form>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Lägg till i kön
+                </button>
             </div>
-        </div>
-    );
-}
-
-// Usp
-function Usp({ icon, message }) {
-    return (
-        <div>
-            {icon}
-            <p>{message}</p>
         </div>
     );
 }
