@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Fragment } from 'react/cjs/react.development';
 import { FaSearch, FaMicrophone, FaPlus } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const songData = [
     {
@@ -1406,8 +1408,28 @@ function Home() {
             <footer>
                 <p>Copyright @con.johansson</p>
             </footer>
+            <ToastContainer theme="dark" />
         </main>
     );
+}
+
+function QueueSong(event, name, song) {
+    event.preventDefault();
+    const data = {
+        name: name,
+        title: song.Title,
+        artist: song.Artist,
+    };
+ 
+    toast.success(`Du la till ${song.Title} i kön`, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
 }
 
 function SongList({ songs }) {
@@ -1425,6 +1447,7 @@ function SongList({ songs }) {
 }
 
 function SongCard({ song }) {
+    const [name, SetName] = useState('');
     return (
         <div className="border-r-6 rounded-lg shadow-lg bg-white mb-2 p-4 flex flex-col content-start text-left">
             <div className="flex items-center">
@@ -1436,9 +1459,23 @@ function SongCard({ song }) {
                 <p>{song.Title}</p>
             </div>
             <div>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Lägg till i kön
-                </button>
+            <form onSubmit={(e) => [QueueSong(e, name, song), SetName('')]}>
+                    <input
+                        className="shadow appearance-none border border-gray-500 rounded w-full py-2 px-2 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        type="text"
+                        value={name}
+                        onChange={(e) => SetName(e.target.value)}
+                        name="name"
+                        placeholder="Ditt namn..."
+                    />
+
+                    <button
+                        type="submit"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Lägg till i kön
+                    </button>
+                </form>
             </div>
         </div>
     );
